@@ -1,26 +1,26 @@
 import React from 'react';
-import { View, Text, FlatList, Button, TouchableOpacity, Platform } from 'react-native';
+import { View, Text, FlatList, Button, TouchableOpacity } from 'react-native';
 import {CATEGORIES} from '../../data/dummy-data';
 import styles from './styles';
-import Colors from '../../constants/Colors';
+
+import CategoryGridTile from '../../components/CategoryGridItem/CategoryGridTile';
 
 const CategoriesScreen = props => {
     
     const renderGridItem = (itemData) => {
         return (
-            <TouchableOpacity style={styles.gridItem} onPress={() => {
-                 props.navigation.navigate({
-                    routeName: 'CategoryMeals', 
-                    params: {
-                        categoryId: itemData.item.id
-                    } 
-                })
-            }}>
-                <View>
-                    <Text>{itemData.item.title}</Text>
-                </View>
-            </TouchableOpacity>
-        )
+            <CategoryGridTile 
+                title={itemData.item.title}
+                color={itemData.item.color}
+                onSelect={() => {
+                    props.navigation.navigate({
+                        routeName: 'CategoryMeals', 
+                        params: {
+                            categoryId: itemData.item.id
+                        } 
+                    })
+            }} />
+        );
     }
     
     return (
@@ -34,10 +34,7 @@ const CategoriesScreen = props => {
 
 CategoriesScreen.navigationOptions = {
     headerTitle: 'Meal Categories',
-    headerStyle: {
-        backgroundColor: Platform.OS === 'android' ? Colors.primaryColor : 'white',
-    },
-    headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primaryColor
+    
 }
 
 export default CategoriesScreen;
