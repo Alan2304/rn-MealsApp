@@ -1,11 +1,20 @@
 import React from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, ScrollView, Image } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import styles from './styles';
 
 import {MEALS} from '../../data/dummy-data';
 
-import HeaderButton from '../../components/HeaderButton/HeaderButton'
+import HeaderButton from '../../components/HeaderButton/HeaderButton';
+import DefaultText from '../../components/DefaultText/DefaultText';
+
+const ListItem = props => {
+    return (
+        <View style={styles.listItem}>
+            <DefaultText>{props.children}</DefaultText>
+        </View>
+    )
+}
 
 const MealDetailScreen = props => {
 
@@ -14,12 +23,22 @@ const MealDetailScreen = props => {
     const selectedMeal = MEALS.find(meal => meal.id == mealId);
 
     return (
-        <View style={styles.screen}>
-            <Text>{selectedMeal.title}</Text>
-            <Button title="Go Back to Categories" onPress={() => {
-                props.navigation.popToTop();
-            }} />
-        </View>
+        <ScrollView>
+            <Image source={{uri: selectedMeal.imageUrl}} style={styles.image} />
+            <View style={styles.details}>
+                <DefaultText>{selectedMeal.duration}m</DefaultText>
+                <DefaultText>{selectedMeal.complexity.toUpperCase()}</DefaultText>
+                <DefaultText>{selectedMeal.affordability.toUpperCase()}</DefaultText>
+            </View>
+            <Text style={styles.title}>Ingredients</Text>
+            {selectedMeal.ingredients.map(ingredient => (
+                <ListItem key={ingredient}>{ingredient}</ListItem>
+            ))}
+            <Text style={styles.title}>Steps</Text>
+            {selectedMeal.steps.map(step => (
+                <ListItem key={step}>{step}</ListItem>
+            ))}
+        </ScrollView>
     )
 }
 
